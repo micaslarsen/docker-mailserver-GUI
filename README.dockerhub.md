@@ -2,7 +2,7 @@
 
 A graphical user interface for managing Docker Mailserver. The application allows easy management of email accounts, aliases, and monitoring of server status.
 
-![Docker Pulls](https://img.shields.io/docker/pulls/dunajdev/docker-mailserver-gui)
+[![Docker Pulls](https://img.shields.io/docker/pulls/dunajdev/docker-mailserver-gui)](https://hub.docker.com/r/dunajdev/docker-mailserver-gui)
 
 ## Features
 
@@ -77,5 +77,5 @@ MIT
 
 ## Links
 
-- [GitHub Repository](https://github.com/dunajdev/docker-mailserver-GUI)
+- [GitHub Repository](https://github.com/dunaj-dev/docker-mailserver-GUI)
 - [Bug Reports](https://github.com/dunajdev/docker-mailserver-GUI/issues)
