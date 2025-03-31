@@ -4,6 +4,24 @@ const docker = new Docker({ socketPath: '/var/run/docker.sock' });
 // Docker container name for docker-mailserver
 const DOCKER_CONTAINER = process.env.DOCKER_CONTAINER || 'mailserver';
 
+// Debug flag
+const DEBUG = process.env.DEBUG_DOCKER === 'true';
+
+/**
+ * Debug logger that only logs if DEBUG is true
+ * @param {string} message - Message to log
+ * @param {any} data - Optional data to log
+ */
+function debugLog(message, data = null) {
+  if (DEBUG) {
+    if (data) {
+      console.log(`[DOCKER-DEBUG] ${message}`, data);
+    } else {
+      console.log(`[DOCKER-DEBUG] ${message}`);
+    }
+  }
+}
+
 /**
  * Executes a command in the docker-mailserver container
  * @param {string} command Command to execute
@@ -11,6 +29,8 @@ const DOCKER_CONTAINER = process.env.DOCKER_CONTAINER || 'mailserver';
  */
 async function execInContainer(command) {
   try {
+    debugLog(`Executing command in container ${DOCKER_CONTAINER}: ${command}`);
+    
     // Get container instance
     const container = docker.getContainer(DOCKER_CONTAINER);
     
@@ -36,15 +56,18 @@ async function execInContainer(command) {
       });
       
       stream.on('end', () => {
+        debugLog(`Command completed. Output:`, stdoutData);
         resolve(stdoutData);
       });
       
       stream.on('error', (err) => {
+        debugLog(`Command error:`, err);
         reject(err);
       });
     });
   } catch (error) {
     console.error(`Error executing command in container: ${command}`, error);
+    debugLog(`Execution error:`, error);
     throw error;
   }
 }
@@ -56,12 +79,14 @@ async function execInContainer(command) {
  */
 async function execSetup(setupCommand) {
   // The setup.sh script is usually located at /usr/local/bin/setup.sh or /usr/local/bin/setup in docker-mailserver
+  debugLog(`Executing setup command: ${setupCommand}`);
   return execInContainer(`/usr/local/bin/setup ${setupCommand}`);
 }
 
 // Function to retrieve email accounts
 async function getAccounts() {
   try {
+    debugLog('Getting email accounts list');
     const stdout = await execSetup('email list');
     
     // Parse multiline output with regex to extract email and size information
@@ -70,6 +95,7 @@ async function getAccounts() {
     
     // Process each line individually
     const lines = stdout.split('\n').filter(line => line.trim().length > 0);
+    debugLog('Raw email list response:', lines);
     
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i].trim();
@@ -84,6 +110,8 @@ async function getAccounts() {
           const totalSpace = match[3] === '~' ? 'unlimited' : match[3];
           const usagePercent = match[4];
           
+          debugLog(`Parsed account: ${email}, Storage: ${usedSpace}/${totalSpace} [${usagePercent}%]`);
+          
           accounts.push({
             email,
             storage: {
@@ -92,13 +120,17 @@ async function getAccounts() {
               percent: usagePercent + '%'
             }
           });
+        } else {
+          debugLog(`Failed to parse account line: ${line}`);
         }
       }
     }
     
+    debugLog(`Found ${accounts.length} accounts`);
     return accounts;
   } catch (error) {
     console.error('Error retrieving accounts:', error);
+    debugLog('Account retrieval error:', error);
     throw new Error('Unable to retrieve account list');
   }
 }
@@ -106,10 +138,13 @@ async function getAccounts() {
 // Function to add a new email account
 async function addAccount(email, password) {
   try {
+    debugLog(`Adding new email account: ${email}`);
     await execSetup(`email add ${email} ${password}`);
+    debugLog(`Account created: ${email}`);
     return { success: true, email };
   } catch (error) {
     console.error('Error adding account:', error);
+    debugLog('Account creation error:', error);
     throw new Error('Unable to add email account');
   }
 }
@@ -117,10 +152,13 @@ async function addAccount(email, password) {
 // Function to delete an email account
 async function deleteAccount(email) {
   try {
+    debugLog(`Deleting email account: ${email}`);
     await execSetup(`email del ${email}`);
+    debugLog(`Account deleted: ${email}`);
     return { success: true, email };
   } catch (error) {
     console.error('Error deleting account:', error);
+    debugLog('Account deletion error:', error);
     throw new Error('Unable to delete email account');
   }
 }
@@ -128,11 +166,13 @@ async function deleteAccount(email) {
 // Function to retrieve aliases
 async function getAliases() {
   try {
+    debugLog('Getting aliases list');
     const stdout = await execSetup('alias list');
     const aliases = [];
     
     // Parse each line in the format "* source destination"
     const lines = stdout.split('\n').filter(line => line.trim().length > 0);
+    debugLog('Raw alias list response:', lines);
     const aliasRegex = /^\* ([\w\-\.@]+) ([\w\-\.@]+)$/;
     
     for (let i = 0; i < lines.length; i++) {
@@ -141,17 +181,25 @@ async function getAliases() {
       if (line.startsWith('*')) {
         const match = line.match(aliasRegex);
         if (match) {
+          const source = match[1];
+          const destination = match[2];
+          debugLog(`Parsed alias: ${source} -> ${destination}`);
+          
           aliases.push({
-            source: match[1],
-            destination: match[2]
+            source,
+            destination
           });
+        } else {
+          debugLog(`Failed to parse alias line: ${line}`);
         }
       }
     }
     
+    debugLog(`Found ${aliases.length} aliases`);
     return aliases;
   } catch (error) {
     console.error('Error retrieving aliases:', error);
+    debugLog('Alias retrieval error:', error);
     throw new Error('Unable to retrieve alias list');
   }
 }
@@ -159,10 +207,13 @@ async function getAliases() {
 // Function to add an alias
 async function addAlias(source, destination) {
   try {
+    debugLog(`Adding new alias: ${source} -> ${destination}`);
     await execSetup(`alias add ${source} ${destination}`);
+    debugLog(`Alias created: ${source} -> ${destination}`);
     return { success: true, source, destination };
   } catch (error) {
     console.error('Error adding alias:', error);
+    debugLog('Alias creation error:', error);
     throw new Error('Unable to add alias');
   }
 }
@@ -170,10 +221,13 @@ async function addAlias(source, destination) {
 // Function to delete an alias
 async function deleteAlias(source) {
   try {
+    debugLog(`Deleting alias: ${source}`);
     await execSetup(`alias del ${source}`);
+    debugLog(`Alias deleted: ${source}`);
     return { success: true, source };
   } catch (error) {
     console.error('Error deleting alias:', error);
+    debugLog('Alias deletion error:', error);
     throw new Error('Unable to delete alias');
   }
 }
@@ -181,12 +235,15 @@ async function deleteAlias(source) {
 // Function to check server status
 async function getServerStatus() {
   try {
+    debugLog('Getting server status');
+    
     // Get container info
     const container = docker.getContainer(DOCKER_CONTAINER);
     const containerInfo = await container.inspect();
     
     // Check if container is running
     const isRunning = containerInfo.State.Running === true;
+    debugLog(`Container running: ${isRunning}`);
     
     let diskUsage = '0%';
     let cpuUsage = '0%';
@@ -194,6 +251,7 @@ async function getServerStatus() {
     
     if (isRunning) {
       // Get container stats
+      debugLog('Getting container stats');
       const stats = await container.stats({ stream: false });
       
       // Calculate CPU usage percentage
@@ -206,13 +264,15 @@ async function getServerStatus() {
       const memoryUsageBytes = stats.memory_stats.usage;
       memoryUsage = formatMemorySize(memoryUsageBytes);
       
+      debugLog(`Resources - CPU: ${cpuUsage}, Memory: ${memoryUsage}`);
+      
       // For disk usage, we would need to run a command inside the container
       // This could be a more complex operation involving checking specific directories
       // For simplicity, we'll set this to "N/A" or implement a basic check
       diskUsage = 'N/A';
     }
     
-    return {
+    const result = {
       status: isRunning ? 'running' : 'stopped',
       resources: {
         cpu: cpuUsage,
@@ -220,8 +280,12 @@ async function getServerStatus() {
         disk: diskUsage
       }
     };
+    
+    debugLog('Server status result:', result);
+    return result;
   } catch (error) {
     console.error('Error checking server status:', error);
+    debugLog('Server status error:', error);
     return {
       status: 'unknown',
       error: error.message

@@ -100,4 +100,9 @@ app.delete('/api/aliases/:source', async (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+  
+  // Log debug status
+  if (process.env.DEBUG_DOCKER === 'true') {
+    console.log('🐞 Docker debug mode is ENABLED');
+  }
 });
