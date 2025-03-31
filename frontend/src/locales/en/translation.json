@@ -35,6 +35,8 @@
     "password": "Password",
     "confirmPassword": "Confirm Password",
     "status": "Status",
+    "storage": "Storage Usage",
+    "aliases": "Aliases",
     "actions": "Actions",
     "addAccount": "Add Account",
     "noAccounts": "No email accounts. Add your first account.",

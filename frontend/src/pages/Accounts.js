@@ -120,12 +120,31 @@ const Accounts = () => {
   // Column definitions for accounts table
   const columns = [
     { key: 'email', label: 'accounts.email' },
-    { key: 'status', label: 'accounts.status', 
-      render: (account) => (
-        <span className={`badge bg-${account.active ? 'success' : 'danger'}`}>
-          {account.active ? t('accounts.status.active') : t('accounts.status.inactive')}
-        </span>
-      )
+    { key: 'storage', label: 'accounts.storage',
+      render: (account) => account.storage ? (
+        <div>
+          <div>{account.storage.used} / {account.storage.total}</div>
+          <div className="progress mt-1" style={{ height: '5px' }}>
+            <div 
+              className="progress-bar" 
+              role="progressbar" 
+              style={{ width: account.storage.percent }} 
+              aria-valuenow={parseInt(account.storage.percent)} 
+              aria-valuemin="0" 
+              aria-valuemax="100">
+            </div>
+          </div>
+        </div>
+      ) : 'N/A'
+    },
+    { key: 'aliases', label: 'accounts.aliases',
+      render: (account) => account.aliases && account.aliases.length > 0 ? (
+        <div>
+          {account.aliases.map((alias, index) => (
+            <span key={index} className="badge bg-secondary me-1 mb-1">{alias}</span>
+          ))}
+        </div>
+      ) : <span className="text-muted">—</span>
     },
     { key: 'actions', label: 'accounts.actions',
       render: (account) => (

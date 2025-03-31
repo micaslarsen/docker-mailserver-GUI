@@ -63,12 +63,48 @@ async function execSetup(setupCommand) {
 async function getAccounts() {
   try {
     const stdout = await execSetup('email list');
-    const accounts = stdout.split('\n')
-      .filter(line => line.trim().length > 0)
-      .map(line => {
-        const email = line.trim();
-        return { email, active: true };
-      });
+    
+    // Parse multiline output with regex to extract email, size, and aliases
+    const accounts = [];
+    const accountLineRegex = /^\* ([\w\-\.@]+) \( ([\w\~]+) \/ ([\w\~]+) \) \[(\d+)%\](.*)$/;
+    const aliasesRegex = /aliases \-> (.*)\]/;
+    
+    // Process each line individually
+    const lines = stdout.split('\n').filter(line => line.trim().length > 0);
+    
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim();
+      
+      // Check if line starts with * which indicates an account entry
+      if (line.startsWith('*')) {
+        const match = line.match(accountLineRegex);
+        
+        if (match) {
+          const email = match[1];
+          const usedSpace = match[2];
+          const totalSpace = match[3] === '~' ? 'unlimited' : match[3];
+          const usagePercent = match[4];
+          
+          // Extract aliases if present in the current line
+          let aliases = [];
+          const aliasMatch = line.match(aliasesRegex);
+          if (aliasMatch) {
+            aliases = aliasMatch[1].split(',').map(alias => alias.trim());
+          }
+          
+          accounts.push({
+            email,
+            storage: {
+              used: usedSpace,
+              total: totalSpace,
+              percent: usagePercent + '%'
+            },
+            aliases
+          });
+        }
+      }
+    }
+    
     return accounts;
   } catch (error) {
     console.error('Error retrieving accounts:', error);

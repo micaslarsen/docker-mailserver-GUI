@@ -35,6 +35,8 @@
     "password": "Hasło",
     "confirmPassword": "Potwierdź Hasło",
     "status": "Status",
+    "storage": "Użycie Dysku",
+    "aliases": "Aliasy",
     "actions": "Akcje",
     "addAccount": "Dodaj Konto",
     "noAccounts": "Brak kont email. Dodaj pierwsze konto.",
