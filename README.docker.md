@@ -1,14 +1,34 @@
-# Docker Mailserver GUI - Docker Setup
+# Docker Mailserver GUI - Detailed Docker Setup
 
-This document provides instructions for deploying the Docker Mailserver GUI using Docker and Docker Compose.
+This document provides detailed instructions for deploying and managing the Docker Mailserver GUI using Docker.
 
 ## Prerequisites
 
 - Docker Engine (version 19.03.0+)
-- Docker Compose (version 1.27.0+)
 - Running docker-mailserver container
+- Docker socket access (/var/run/docker.sock)
+- Docker Compose (version 1.27.0+ - only if using Option 2)
 
-## Directory Structure
+## Common Configuration
+
+### Environment Variables
+
+Both deployment options use the same environment variables:
+
+- `DOCKER_CONTAINER`: The name of your docker-mailserver container (required)
+- `PORT`: Internal port for the Node.js server (defaults to 3001)
+- `NODE_ENV`: Node.js environment (defaults to production)
+
+### Deployment Options
+
+You can deploy Docker Mailserver GUI in two ways:
+
+1. **Option 1: Using pre-built Docker Hub image** - Easiest method, no build required
+2. **Option 2: Building locally with Docker Compose** - For customization or development
+
+Each option is detailed in the sections below.
+
+## Project Structure
 
 ```
 docker-mailserver-GUI/
@@ -22,9 +42,31 @@ docker-mailserver-GUI/
 └── README.docker.md       # Docker setup documentation
 ```
 
-## Configuration
+## Option 1: Using Docker Hub Image
 
-Before running the application, you just need to adjust the `docker-compose.yml` file to match your docker-mailserver setup:
+The application is available as a pre-built Docker image on Docker Hub:
+
+```bash
+docker run -d \
+  --name mailserver-gui \
+  -p 80:80 \
+  -e DOCKER_CONTAINER=mailserver \
+  -v /var/run/docker.sock:/var/run/docker.sock:ro \
+  dunajdev/docker-mailserver-gui:latest
+```
+
+Where:
+- `mailserver` is the name of your docker-mailserver container
+- Port 80 is mapped to your host
+
+For more information about the Docker Hub image, visit:
+https://hub.docker.com/r/dunajdev/docker-mailserver-gui
+
+## Option 2: Building Locally with Docker Compose
+
+### Configuration
+
+Before building the application, adjust the `docker-compose.yml` file to match your docker-mailserver setup:
 
 1. Update the `DOCKER_CONTAINER` environment variable to match your docker-mailserver container name
 
@@ -36,7 +78,7 @@ environment:
 
 That's it! Since we're using Docker API via the socket, no network configuration is needed. The application will communicate with docker-mailserver through the Docker daemon on the host.
 
-## Building and Running
+### Building and Running
 
 To build and start the application:
 
@@ -133,3 +175,4 @@ Unlike a traditional approach where containers need to be on the same network to
 - The container has access to the Docker socket, which is a security risk. Make sure to restrict access to the container.
 - Consider setting up HTTPS for production deployments (you can modify the nginx.conf)
 - Add authentication to the web interface for production use
+

@@ -80,9 +80,24 @@ The application supports multiple languages:
 
 Languages can be switched using the language selector in the top navigation bar.
 
-## Docker
+## Docker Deployment
 
-You can run the entire application using Docker Compose in a single container. This setup integrates with your existing docker-mailserver container:
+There are two ways to deploy using Docker:
+
+### Option 1: Using the pre-built image from Docker Hub (Recommended)
+
+```bash
+docker run -d \
+  --name mailserver-gui \
+  -p 80:80 \
+  -e DOCKER_CONTAINER=mailserver \
+  -v /var/run/docker.sock:/var/run/docker.sock:ro \
+  dunajdev/docker-mailserver-gui:latest
+```
+
+**Note:** Replace `mailserver` with the name of your docker-mailserver container.
+
+### Option 2: Building locally with Docker Compose
 
 ```bash
 # Build and start the container
@@ -91,7 +106,14 @@ docker-compose up -d
 
 The application will be available at http://localhost
 
-Key features of the Docker setup:
+### Environment Variables
+
+- `DOCKER_CONTAINER`: Name of your docker-mailserver container (required)
+- `PORT`: Internal port for the Node.js server (defaults to 3001)
+- `NODE_ENV`: Node.js environment (defaults to production)
+
+### Docker Features
+
 - Single container with both frontend and backend
 - Nginx serves the React frontend and proxies API requests 
 - Communication with docker-mailserver via Docker API
@@ -99,7 +121,9 @@ Key features of the Docker setup:
 - Only the Docker socket needs to be mounted
 - Minimal configuration (just set the container name)
 
-For detailed Docker setup instructions, please refer to [README.docker.md](README.docker.md).
+For detailed Docker setup instructions, please refer to:
+- [README.docker.md](README.docker.md) - Detailed Docker setup guide
+- [README.dockerhub.md](README.dockerhub.md) - Docker Hub specific information
 
 ## License
 
