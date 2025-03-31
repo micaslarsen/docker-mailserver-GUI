@@ -52,6 +52,16 @@ export const deleteAccount = async (email) => {
   }
 };
 
+export const updateAccountPassword = async (email, password) => {
+  try {
+    const response = await api.put(`/accounts/${email}/password`, { password });
+    return response.data;
+  } catch (error) {
+    console.error('Error updating account password:', error);
+    throw error;
+  }
+};
+
 // API dla aliasów
 export const getAliases = async () => {
   try {

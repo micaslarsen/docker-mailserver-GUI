@@ -33,12 +33,15 @@
     "existingAccounts": "Istniejące Konta",
     "email": "Adres Email",
     "password": "Hasło",
+    "newPassword": "Nowe Hasło",
     "confirmPassword": "Potwierdź Hasło",
     "status": "Status",
     "storage": "Użycie Dysku",
     "aliases": "Aliasy",
     "actions": "Akcje",
     "addAccount": "Dodaj Konto",
+    "changePassword": "Zmień Hasło",
+    "updatePassword": "Aktualizuj Hasło",
     "noAccounts": "Brak kont email. Dodaj pierwsze konto.",
     "emailRequired": "Email jest wymagany",
     "invalidEmail": "Nieprawidłowy format email",
@@ -47,8 +50,10 @@
     "passwordsNotMatch": "Hasła nie są takie same",
     "accountCreated": "Konto zostało pomyślnie utworzone!",
     "accountDeleted": "Konto zostało pomyślnie usunięte!",
+    "passwordUpdated": "Hasło zostało pomyślnie zaktualizowane!",
     "cannotCreateAccount": "Nie można utworzyć konta. Spróbuj ponownie.",
     "cannotDeleteAccount": "Nie można usunąć konta. Spróbuj ponownie.",
+    "cannotUpdatePassword": "Nie można zaktualizować hasła. Spróbuj ponownie.",
     "confirmDelete": "Czy na pewno chcesz usunąć konto {{email}}?",
     "status": {
       "active": "Aktywne",
@@ -93,7 +98,8 @@
   "common": {
     "loading": "Ładowanie...",
     "error": "Błąd",
-    "success": "Sukces"
+    "success": "Sukces",
+    "cancel": "Anuluj"
   },
   "api": {
     "errors": {
@@ -101,6 +107,7 @@
       "fetchAccounts": "Błąd podczas pobierania kont",
       "addAccount": "Błąd podczas dodawania konta",
       "deleteAccount": "Błąd podczas usuwania konta",
+      "updatePassword": "Błąd podczas aktualizacji hasła",
       "fetchAliases": "Błąd podczas pobierania aliasów",
       "addAlias": "Błąd podczas dodawania aliasu",
       "deleteAlias": "Błąd podczas usuwania aliasu"

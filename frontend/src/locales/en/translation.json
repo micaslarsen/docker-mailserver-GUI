@@ -33,12 +33,15 @@
     "existingAccounts": "Existing Accounts",
     "email": "Email Address",
     "password": "Password",
+    "newPassword": "New Password",
     "confirmPassword": "Confirm Password",
     "status": "Status",
     "storage": "Storage Usage",
     "aliases": "Aliases",
     "actions": "Actions",
     "addAccount": "Add Account",
+    "changePassword": "Change Password",
+    "updatePassword": "Update Password",
     "noAccounts": "No email accounts. Add your first account.",
     "emailRequired": "Email is required",
     "invalidEmail": "Invalid email format",
@@ -47,8 +50,10 @@
     "passwordsNotMatch": "Passwords do not match",
     "accountCreated": "Account created successfully!",
     "accountDeleted": "Account deleted successfully!",
+    "passwordUpdated": "Password updated successfully!",
     "cannotCreateAccount": "Unable to create account. Please try again.",
     "cannotDeleteAccount": "Unable to delete account. Please try again.",
+    "cannotUpdatePassword": "Unable to update password. Please try again.",
     "confirmDelete": "Are you sure you want to delete account {{email}}?",
     "status": {
       "active": "Active",
@@ -93,7 +98,8 @@
   "common": {
     "loading": "Loading...",
     "error": "Error",
-    "success": "Success"
+    "success": "Success",
+    "cancel": "Cancel"
   },
   "api": {
     "errors": {
@@ -101,6 +107,7 @@
       "fetchAccounts": "Error fetching accounts",
       "addAccount": "Error adding account",
       "deleteAccount": "Error deleting account",
+      "updatePassword": "Error updating password",
       "fetchAliases": "Error fetching aliases",
       "addAlias": "Error adding alias",
       "deleteAlias": "Error deleting alias"

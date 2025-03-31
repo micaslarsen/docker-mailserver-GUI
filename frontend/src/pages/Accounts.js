@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { getAccounts, addAccount, deleteAccount } from '../services/api';
+import { getAccounts, addAccount, deleteAccount, updateAccountPassword } from '../services/api';
 import { 
   AlertMessage, 
   Button,
@@ -22,6 +22,15 @@ const Accounts = () => {
   });
   const [formErrors, setFormErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState('');
+  
+  // State for password change modal
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [selectedAccount, setSelectedAccount] = useState(null);
+  const [passwordFormData, setPasswordFormData] = useState({
+    newPassword: '',
+    confirmPassword: ''
+  });
+  const [passwordFormErrors, setPasswordFormErrors] = useState({});
 
   useEffect(() => {
     fetchAccounts();
@@ -116,6 +125,78 @@ const Accounts = () => {
       }
     }
   };
+  
+  // Open password change modal for an account
+  const handleChangePassword = (account) => {
+    setSelectedAccount(account);
+    setPasswordFormData({
+      newPassword: '',
+      confirmPassword: ''
+    });
+    setPasswordFormErrors({});
+    setShowPasswordModal(true);
+  };
+  
+  // Close password change modal
+  const handleClosePasswordModal = () => {
+    setShowPasswordModal(false);
+    setSelectedAccount(null);
+  };
+  
+  // Handle input changes for password change form
+  const handlePasswordInputChange = (e) => {
+    const { name, value } = e.target;
+    setPasswordFormData({
+      ...passwordFormData,
+      [name]: value
+    });
+    
+    // Clear the error for this field while typing
+    if (passwordFormErrors[name]) {
+      setPasswordFormErrors({
+        ...passwordFormErrors,
+        [name]: null
+      });
+    }
+  };
+  
+  // Validate password change form
+  const validatePasswordForm = () => {
+    const errors = {};
+    
+    if (!passwordFormData.newPassword) {
+      errors.newPassword = 'accounts.passwordRequired';
+    } else if (passwordFormData.newPassword.length < 8) {
+      errors.newPassword = 'accounts.passwordLength';
+    }
+    
+    if (passwordFormData.newPassword !== passwordFormData.confirmPassword) {
+      errors.confirmPassword = 'accounts.passwordsNotMatch';
+    }
+    
+    setPasswordFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+  
+  // Submit password change
+  const handleSubmitPasswordChange = async (e) => {
+    e.preventDefault();
+    setError(null);
+    setSuccessMessage('');
+    
+    if (!validatePasswordForm()) {
+      return;
+    }
+    
+    try {
+      await updateAccountPassword(selectedAccount.email, passwordFormData.newPassword);
+      setSuccessMessage('accounts.passwordUpdated');
+      handleClosePasswordModal(); // Close the modal
+    } catch (err) {
+      console.error(t('api.errors.updatePassword'), err);
+      setError('api.errors.updatePassword');
+    }
+  };
 
   // Column definitions for accounts table
   const columns = [
@@ -139,12 +220,23 @@ const Accounts = () => {
     },
     { key: 'actions', label: 'accounts.actions',
       render: (account) => (
-        <Button
-          variant="danger"
-          size="sm"
-          icon="trash"
-          onClick={() => handleDelete(account.email)}
-        />
+        <div className="d-flex">
+          <Button
+            variant="primary"
+            size="sm"
+            icon="key"
+            title={t('accounts.changePassword')}
+            onClick={() => handleChangePassword(account)}
+            className="me-2"
+          />
+          <Button
+            variant="danger"
+            size="sm"
+            icon="trash"
+            title={t('accounts.confirmDelete', { email: account.email })}
+            onClick={() => handleDelete(account.email)}
+          />
+        </div>
       )
     }
   ];
@@ -215,6 +307,69 @@ const Accounts = () => {
           </Card>
         </div>
       </div>
+      
+      {/* Password Change Modal */}
+      {showPasswordModal && selectedAccount && (
+        <div className="modal show d-block" tabIndex="-1">
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">
+                  {t('accounts.changePassword')} - {selectedAccount.email}
+                </h5>
+                <button 
+                  type="button" 
+                  className="btn-close" 
+                  onClick={handleClosePasswordModal} 
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div className="modal-body">
+                <form onSubmit={handleSubmitPasswordChange}>
+                  <FormField
+                    type="password"
+                    id="newPassword"
+                    name="newPassword"
+                    label="accounts.newPassword"
+                    value={passwordFormData.newPassword}
+                    onChange={handlePasswordInputChange}
+                    error={passwordFormErrors.newPassword}
+                    required
+                  />
+                  
+                  <FormField
+                    type="password"
+                    id="confirmPasswordModal"
+                    name="confirmPassword"
+                    label="accounts.confirmPassword"
+                    value={passwordFormData.confirmPassword}
+                    onChange={handlePasswordInputChange}
+                    error={passwordFormErrors.confirmPassword}
+                    required
+                  />
+                  
+                  <div className="modal-footer">
+                    <button 
+                      type="button" 
+                      className="btn btn-secondary" 
+                      onClick={handleClosePasswordModal}
+                    >
+                      {t('common.cancel')}
+                    </button>
+                    <button 
+                      type="submit" 
+                      className="btn btn-primary"
+                    >
+                      {t('accounts.updatePassword')}
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div className="modal-backdrop show"></div>
+        </div>
+      )}
     </div>
   );
 };

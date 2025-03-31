@@ -60,6 +60,26 @@ app.delete('/api/accounts/:email', async (req, res) => {
   }
 });
 
+// Endpoint for updating an email account password
+app.put('/api/accounts/:email/password', async (req, res) => {
+  try {
+    const { email } = req.params;
+    const { password } = req.body;
+    
+    if (!email) {
+      return res.status(400).json({ error: 'Email is required' });
+    }
+    if (!password) {
+      return res.status(400).json({ error: 'Password is required' });
+    }
+    
+    await dockerMailserver.updateAccountPassword(email, password);
+    res.json({ message: 'Password updated successfully', email });
+  } catch (error) {
+    res.status(500).json({ error: 'Unable to update password' });
+  }
+});
+
 // Endpoint for retrieving aliases
 app.get('/api/aliases', async (req, res) => {
   try {

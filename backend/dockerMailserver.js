@@ -150,6 +150,20 @@ async function addAccount(email, password) {
   }
 }
 
+// Function to update an email account password
+async function updateAccountPassword(email, password) {
+  try {
+    debugLog(`Updating password for account: ${email}`);
+    await execSetup(`email update ${email} ${password}`);
+    debugLog(`Password updated for account: ${email}`);
+    return { success: true, email };
+  } catch (error) {
+    console.error('Error updating account password:', error);
+    debugLog('Account password update error:', error);
+    throw new Error('Unable to update email account password');
+  }
+}
+
 // Function to delete an email account
 async function deleteAccount(email) {
   try {
@@ -310,6 +324,7 @@ function formatMemorySize(bytes) {
 module.exports = {
   getAccounts,
   addAccount,
+  updateAccountPassword,
   deleteAccount,
   getAliases,
   addAlias,
