@@ -91,17 +91,18 @@ async function getAccounts() {
     
     // Parse multiline output with regex to extract email and size information
     const accounts = [];
-    const accountLineRegex = /^\* ([\w\-\.@]+) \( ([\w\~]+) \/ ([\w\~]+) \) \[(\d+)%\](.*)$/;
+    const accountLineRegex = /\* ([\w\-\.@]+) \( ([\w\~]+) \/ ([\w\~]+) \) \[(\d+)%\](.*)$/;
     
     // Process each line individually
     const lines = stdout.split('\n').filter(line => line.trim().length > 0);
     debugLog('Raw email list response:', lines);
     
     for (let i = 0; i < lines.length; i++) {
-      const line = lines[i].trim();
+      // Clean the line from binary control characters
+      const line = lines[i].replace(/[\x00-\x1F\x7F-\x9F]/g, '').trim();
       
-      // Check if line starts with * which indicates an account entry
-      if (line.startsWith('*')) {
+      // Check if line contains * which indicates an account entry
+      if (line.includes('*')) {
         const match = line.match(accountLineRegex);
         
         if (match) {
@@ -173,12 +174,15 @@ async function getAliases() {
     // Parse each line in the format "* source destination"
     const lines = stdout.split('\n').filter(line => line.trim().length > 0);
     debugLog('Raw alias list response:', lines);
-    const aliasRegex = /^\* ([\w\-\.@]+) ([\w\-\.@]+)$/;
+    
+    // Modified regex to be more tolerant of control characters that might appear in the output
+    const aliasRegex = /\* ([\w\-\.@]+) ([\w\-\.@]+)$/;
     
     for (let i = 0; i < lines.length; i++) {
-      const line = lines[i].trim();
+      // Clean the line from binary control characters
+      const line = lines[i].replace(/[\x00-\x1F\x7F-\x9F]/g, '').trim();
       
-      if (line.startsWith('*')) {
+      if (line.includes('*')) {
         const match = line.match(aliasRegex);
         if (match) {
           const source = match[1];
