@@ -137,15 +137,6 @@ const Accounts = () => {
         </div>
       ) : 'N/A'
     },
-    { key: 'aliases', label: 'accounts.aliases',
-      render: (account) => account.aliases && account.aliases.length > 0 ? (
-        <div>
-          {account.aliases.map((alias, index) => (
-            <span key={index} className="badge bg-secondary me-1 mb-1">{alias}</span>
-          ))}
-        </div>
-      ) : <span className="text-muted">—</span>
-    },
     { key: 'actions', label: 'accounts.actions',
       render: (account) => (
         <Button

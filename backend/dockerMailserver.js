@@ -64,10 +64,9 @@ async function getAccounts() {
   try {
     const stdout = await execSetup('email list');
     
-    // Parse multiline output with regex to extract email, size, and aliases
+    // Parse multiline output with regex to extract email and size information
     const accounts = [];
     const accountLineRegex = /^\* ([\w\-\.@]+) \( ([\w\~]+) \/ ([\w\~]+) \) \[(\d+)%\](.*)$/;
-    const aliasesRegex = /aliases \-> (.*)\]/;
     
     // Process each line individually
     const lines = stdout.split('\n').filter(line => line.trim().length > 0);
@@ -85,21 +84,13 @@ async function getAccounts() {
           const totalSpace = match[3] === '~' ? 'unlimited' : match[3];
           const usagePercent = match[4];
           
-          // Extract aliases if present in the current line
-          let aliases = [];
-          const aliasMatch = line.match(aliasesRegex);
-          if (aliasMatch) {
-            aliases = aliasMatch[1].split(',').map(alias => alias.trim());
-          }
-          
           accounts.push({
             email,
             storage: {
               used: usedSpace,
               total: totalSpace,
               percent: usagePercent + '%'
-            },
-            aliases
+            }
           });
         }
       }
@@ -138,15 +129,26 @@ async function deleteAccount(email) {
 async function getAliases() {
   try {
     const stdout = await execSetup('alias list');
-    const aliases = stdout.split('\n')
-      .filter(line => line.trim().length > 0)
-      .map(line => {
-        const parts = line.split(' -> ');
-        return {
-          source: parts[0].trim(),
-          destination: parts[1].trim()
-        };
-      });
+    const aliases = [];
+    
+    // Parse each line in the format "* source destination"
+    const lines = stdout.split('\n').filter(line => line.trim().length > 0);
+    const aliasRegex = /^\* ([\w\-\.@]+) ([\w\-\.@]+)$/;
+    
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim();
+      
+      if (line.startsWith('*')) {
+        const match = line.match(aliasRegex);
+        if (match) {
+          aliases.push({
+            source: match[1],
+            destination: match[2]
+          });
+        }
+      }
+    }
+    
     return aliases;
   } catch (error) {
     console.error('Error retrieving aliases:', error);
