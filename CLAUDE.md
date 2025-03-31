@@ -63,3 +63,9 @@ The backend uses Docker API to:
 - Handle loading/error states for all API requests
 - Follow RESTful patterns for API endpoints
 - Implement proper form validation
+
+## Docker Hub Publication
+- **Repository Category:** "Monitoring & Observability" (primary) or "Integrations & Delivery" (alternative)
+- **Tags:** Use semantic versioning (e.g., v1.0.0, latest)
+- **Description:** Include feature list, requirements, and setup instructions
+- **Documentation:** Link to README.md and configuration examples
