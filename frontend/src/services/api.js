@@ -83,9 +83,9 @@ export const addAlias = async (source, destination) => {
   }
 };
 
-export const deleteAlias = async (source) => {
+export const deleteAlias = async (source, destination) => {
   try {
-    const response = await api.delete(`/aliases/${source}`);
+    const response = await api.delete(`/aliases/${source}/${destination}`);
     return response.data;
   } catch (error) {
     console.error('Error deleting alias:', error);

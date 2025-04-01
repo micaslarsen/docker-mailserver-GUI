@@ -107,12 +107,16 @@ app.post('/api/aliases', async (req, res) => {
 // Endpoint for deleting an alias
 app.delete('/api/aliases/:source', async (req, res) => {
   try {
-    const { source } = req.params;
+    const { source, destination } = req.params;
     if (!source) {
       return res.status(400).json({ error: 'Source is required' });
     }
-    await dockerMailserver.deleteAlias(source);
-    res.json({ message: 'Alias deleted successfully', source });
+    
+    if (!destination) {
+      return res.status(400).json({ error: 'Destination is required' });
+    }
+    await dockerMailserver.deleteAlias(source, destination);
+    res.json({ message: 'Alias deleted successfully', source, destination });
   } catch (error) {
     res.status(500).json({ error: 'Unable to delete alias' });
   }

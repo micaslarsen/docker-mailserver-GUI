@@ -35,7 +35,6 @@
     "password": "Password",
     "newPassword": "New Password",
     "confirmPassword": "Confirm Password",
-    "status": "Status",
     "storage": "Storage Usage",
     "aliases": "Aliases",
     "actions": "Actions",
@@ -54,11 +53,7 @@
     "cannotCreateAccount": "Unable to create account. Please try again.",
     "cannotDeleteAccount": "Unable to delete account. Please try again.",
     "cannotUpdatePassword": "Unable to update password. Please try again.",
-    "confirmDelete": "Are you sure you want to delete account {{email}}?",
-    "status": {
-      "active": "Active",
-      "inactive": "Inactive"
-    }
+    "confirmDelete": "Are you sure you want to delete account {{email}}?"
   },
   "aliases": {
     "title": "Aliases Management",
@@ -79,7 +74,7 @@
     "aliasDeleted": "Alias deleted successfully!",
     "cannotCreateAlias": "Unable to create alias. Please try again.",
     "cannotDeleteAlias": "Unable to delete alias. Please try again.",
-    "confirmDelete": "Are you sure you want to delete alias {{source}}?"
+    "confirmDelete": "Are you sure you want to delete alias {{source}} => {{destination}}?"
   },
   "settings": {
     "title": "Settings",

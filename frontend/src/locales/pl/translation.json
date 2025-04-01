@@ -35,7 +35,6 @@
     "password": "Hasło",
     "newPassword": "Nowe Hasło",
     "confirmPassword": "Potwierdź Hasło",
-    "status": "Status",
     "storage": "Użycie Dysku",
     "aliases": "Aliasy",
     "actions": "Akcje",
@@ -54,11 +53,7 @@
     "cannotCreateAccount": "Nie można utworzyć konta. Spróbuj ponownie.",
     "cannotDeleteAccount": "Nie można usunąć konta. Spróbuj ponownie.",
     "cannotUpdatePassword": "Nie można zaktualizować hasła. Spróbuj ponownie.",
-    "confirmDelete": "Czy na pewno chcesz usunąć konto {{email}}?",
-    "status": {
-      "active": "Aktywne",
-      "inactive": "Nieaktywne"
-    }
+    "confirmDelete": "Czy na pewno chcesz usunąć konto {{email}}?"
   },
   "aliases": {
     "title": "Zarządzanie Aliasami",
@@ -79,7 +74,7 @@
     "aliasDeleted": "Alias został pomyślnie usunięty!",
     "cannotCreateAlias": "Nie można utworzyć aliasu. Spróbuj ponownie.",
     "cannotDeleteAlias": "Nie można usunąć aliasu. Spróbuj ponownie.",
-    "confirmDelete": "Czy na pewno chcesz usunąć alias {{source}}?"
+    "confirmDelete": "Czy na pewno chcesz usunąć alias {{source}} => {{destination}}?"
   },
   "settings": {
     "title": "Ustawienia",

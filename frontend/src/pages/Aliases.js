@@ -104,10 +104,10 @@ const Aliases = () => {
     }
   };
 
-  const handleDelete = async (source) => {
-    if (window.confirm(t('aliases.confirmDelete', { source }))) {
+  const handleDelete = async (source, destination) => {
+    if (window.confirm(t('aliases.confirmDelete', { source, destination }))) {
       try {
-        await deleteAlias(source);
+        await deleteAlias(source, destination);
         setSuccessMessage('aliases.aliasDeleted');
         fetchData(); // Refresh the aliases list
       } catch (err) {
@@ -127,7 +127,7 @@ const Aliases = () => {
           variant="danger"
           size="sm"
           icon="trash"
-          onClick={() => handleDelete(alias.source)}
+          onClick={() => handleDelete(alias.source, alias.destination)}
         />
       )
     }

@@ -237,12 +237,12 @@ async function addAlias(source, destination) {
 }
 
 // Function to delete an alias
-async function deleteAlias(source) {
+async function deleteAlias(source, destination) {
   try {
-    debugLog(`Deleting alias: ${source}`);
-    await execSetup(`alias del ${source}`);
-    debugLog(`Alias deleted: ${source}`);
-    return { success: true, source };
+    debugLog(`Deleting alias: ${source} => ${destination}`);
+    await execSetup(`alias del ${source} ${destination}`);
+    debugLog(`Alias deleted: ${source} => ${destination}`);
+    return { success: true, source, destination };
   } catch (error) {
     console.error('Error deleting alias:', error);
     debugLog('Alias deletion error:', error);
