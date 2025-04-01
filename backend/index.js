@@ -105,7 +105,7 @@ app.post('/api/aliases', async (req, res) => {
 });
 
 // Endpoint for deleting an alias
-app.delete('/api/aliases/:source', async (req, res) => {
+app.delete('/api/aliases/:source/:destination', async (req, res) => {
   try {
     const { source, destination } = req.params;
     if (!source) {

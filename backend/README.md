@@ -37,4 +37,4 @@ SETUP_SCRIPT=/path/to/docker-mailserver/setup.sh
 - `DELETE /api/accounts/:email` - Delete an account
 - `GET /api/aliases` - List of aliases
 - `POST /api/aliases` - Add a new alias
-- `DELETE /api/aliases/:source` - Delete an alias
+- `DELETE /api/aliases/:source/:destination` - Delete an alias
