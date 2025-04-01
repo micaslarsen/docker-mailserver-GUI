@@ -347,6 +347,7 @@ const Accounts = () => {
                     error={passwordFormErrors.confirmPassword}
                     required
                   />
+                </form>
                   
                   <div className="modal-footer">
                     <button 
@@ -363,7 +364,6 @@ const Accounts = () => {
                       {t('accounts.updatePassword')}
                     </button>
                   </div>
-                </form>
               </div>
             </div>
           </div>
