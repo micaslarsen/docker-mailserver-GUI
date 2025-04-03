@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const swaggerUi = require('swagger-ui-express');
+const swaggerJsdoc = require('swagger-jsdoc');
 const dockerMailserver = require('./dockerMailserver');
 
 dotenv.config();
@@ -8,11 +10,38 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+const options = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'Docker Mailserver GUI API',
+      version: '1.0.0',
+      description: 'API for Docker Mailserver GUI',
+    },
+  },
+  apis: ['./*.js'], // files containing annotations as above
+};
+
+const specs = swaggerJsdoc(options);
+
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 // Routes
+/**
+ * @swagger
+ * /api/status:
+ *   get:
+ *     summary: Get server status
+ *     description: Retrieve the status of the docker-mailserver
+ *     responses:
+ *       200:
+ *         description: Server status
+ *       500:
+ *         description: Unable to connect to docker-mailserver
+ */
 app.get('/api/status', async (req, res) => {
   try {
     const status = await dockerMailserver.getServerStatus();
@@ -23,6 +52,18 @@ app.get('/api/status', async (req, res) => {
 });
 
 // Endpoint for retrieving email accounts
+/**
+ * @swagger
+ * /api/accounts:
+ *   get:
+ *     summary: Get email accounts
+ *     description: Retrieve all email accounts
+ *     responses:
+ *       200:
+ *         description: List of email accounts
+ *       500:
+ *         description: Unable to retrieve accounts
+ */
 app.get('/api/accounts', async (req, res) => {
   try {
     const accounts = await dockerMailserver.getAccounts();
@@ -33,6 +74,33 @@ app.get('/api/accounts', async (req, res) => {
 });
 
 // Endpoint for adding a new email account
+/**
+ * @swagger
+ * /api/accounts:
+ *   post:
+ *     summary: Add a new email account
+ *     description: Add a new email account to the docker-mailserver
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 description: Email address of the new account
+ *               password:
+ *                 type: string
+ *                 description: Password for the new account
+ *     responses:
+ *       201:
+ *         description: Account created successfully
+ *       400:
+ *         description: Email and password are required
+ *       500:
+ *         description: Unable to create account
+ */
 app.post('/api/accounts', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -47,6 +115,27 @@ app.post('/api/accounts', async (req, res) => {
 });
 
 // Endpoint for deleting an email account
+/**
+ * @swagger
+ * /api/accounts/{email}:
+ *   delete:
+ *     summary: Delete an email account
+ *     description: Delete an email account from the docker-mailserver
+ *     parameters:
+ *       - in: path
+ *         name: email
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Email address of the account to delete
+ *     responses:
+ *       200:
+ *         description: Account deleted successfully
+ *       400:
+ *         description: Email is required
+ *       500:
+ *         description: Unable to delete account
+ */
 app.delete('/api/accounts/:email', async (req, res) => {
   try {
     const { email } = req.params;
@@ -61,6 +150,37 @@ app.delete('/api/accounts/:email', async (req, res) => {
 });
 
 // Endpoint for updating an email account password
+/**
+ * @swagger
+ * /api/accounts/{email}/password:
+ *   put:
+ *     summary: Update an email account password
+ *     description: Update the password for an existing email account
+ *     parameters:
+ *       - in: path
+ *         name: email
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Email address of the account to update
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               password:
+ *                 type: string
+ *                 description: New password for the account
+ *     responses:
+ *       200:
+ *         description: Password updated successfully
+ *       400:
+ *         description: Email and password are required
+ *       500:
+ *         description: Unable to update password
+ */
 app.put('/api/accounts/:email/password', async (req, res) => {
   try {
     const { email } = req.params;
@@ -81,6 +201,18 @@ app.put('/api/accounts/:email/password', async (req, res) => {
 });
 
 // Endpoint for retrieving aliases
+/**
+ * @swagger
+ * /api/aliases:
+ *   get:
+ *     summary: Get aliases
+ *     description: Retrieve all email aliases
+ *     responses:
+ *       200:
+ *         description: List of email aliases
+ *       500:
+ *         description: Unable to retrieve aliases
+ */
 app.get('/api/aliases', async (req, res) => {
   try {
     const aliases = await dockerMailserver.getAliases();
@@ -91,6 +223,33 @@ app.get('/api/aliases', async (req, res) => {
 });
 
 // Endpoint for adding an alias
+/**
+ * @swagger
+ * /api/aliases:
+ *   post:
+ *     summary: Add a new alias
+ *     description: Add a new email alias to the docker-mailserver
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               source:
+ *                 type: string
+ *                 description: Source email address for the alias
+ *               destination:
+ *                 type: string
+ *                 description: Destination email address for the alias
+ *     responses:
+ *       201:
+ *         description: Alias created successfully
+ *       400:
+ *         description: Source and destination are required
+ *       500:
+ *         description: Unable to create alias
+ */
 app.post('/api/aliases', async (req, res) => {
   try {
     const { source, destination } = req.body;
@@ -105,6 +264,33 @@ app.post('/api/aliases', async (req, res) => {
 });
 
 // Endpoint for deleting an alias
+/**
+ * @swagger
+ * /api/aliases/{source}/{destination}:
+ *   delete:
+ *     summary: Delete an alias
+ *     description: Delete an email alias from the docker-mailserver
+ *     parameters:
+ *       - in: path
+ *         name: source
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Source email address of the alias to delete
+ *       - in: path
+ *         name: destination
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Destination email address of the alias to delete
+ *     responses:
+ *       200:
+ *         description: Alias deleted successfully
+ *       400:
+ *         description: Source and destination are required
+ *       500:
+ *         description: Unable to delete alias
+ */
 app.delete('/api/aliases/:source/:destination', async (req, res) => {
   try {
     const { source, destination } = req.params;

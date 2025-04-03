@@ -79,13 +79,13 @@ const Settings = () => {
       </Card>
       
       <Card title="settings.aboutTitle">
-        <p>
+        <Card.Text> {/* Use Card.Text */}
           {t('settings.aboutDescription')}
-        </p>
-        <p>
+        </Card.Text>
+        <Card.Text> {/* Use Card.Text */}
           <strong>{t('settings.version')}:</strong> 1.0.0
-        </p>
-        <p>
+        </Card.Text>
+        <Card.Text> {/* Use Card.Text */}
           <a
             href="https://github.com/docker-mailserver/docker-mailserver"
             target="_blank"
@@ -97,7 +97,7 @@ const Settings = () => {
               text="settings.githubLink"
             />
           </a>
-        </p>
+        </Card.Text> {/* Correct closing tag */}
       </Card>
     </div>
   );

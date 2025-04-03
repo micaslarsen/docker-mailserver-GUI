@@ -10,6 +10,8 @@ import {
   LoadingSpinner,
   SelectField
 } from '../components';
+import Row from 'react-bootstrap/Row'; // Import Row
+import Col from 'react-bootstrap/Col'; // Import Col
 
 const Aliases = () => {
   const { t } = useTranslation();
@@ -146,9 +148,9 @@ const Aliases = () => {
       <AlertMessage type="danger" message={error} />
       <AlertMessage type="success" message={successMessage} />
       
-      <div className="row">
-        <div className="col-md-6">
-          <Card title="aliases.newAlias" className="mb-4">
+      <Row> {/* Use Row component */}
+        <Col md={6} className="mb-4"> {/* Use Col component */}
+          <Card title="aliases.newAlias"> {/* Removed mb-4 from Card, added to Col */}
             <form onSubmit={handleSubmit} className="form-wrapper">
               <FormField
                 type="email"
@@ -183,9 +185,9 @@ const Aliases = () => {
               />
             </form>
           </Card>
-        </div>
+        </Col> {/* Close first Col */}
         
-        <div className="col-md-6">
+        <Col md={6}> {/* Use Col component */}
           <Card title="aliases.existingAliases">
             <DataTable
               columns={columns}
@@ -195,8 +197,8 @@ const Aliases = () => {
               emptyMessage="aliases.noAliases"
             />
           </Card>
-        </div>
-      </div>
+        </Col> {/* Close second Col */}
+      </Row> {/* Close Row */}
     </div>
   );
 };

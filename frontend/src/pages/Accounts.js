@@ -2,15 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getAccounts, addAccount, deleteAccount, updateAccountPassword } from '../services/api';
 import { 
-  AlertMessage, 
+  AlertMessage,
   Button,
-  Card, 
-  DataTable, 
-  FormField, 
-  LoadingSpinner 
+  Card,
+  DataTable,
+  FormField,
+  LoadingSpinner
 } from '../components';
+import { useRef } from 'react';
+import Row from 'react-bootstrap/Row';         // Import Row
+import Col from 'react-bootstrap/Col';           // Import Col
+import Modal from 'react-bootstrap/Modal';       // Import Modal
+import ProgressBar from 'react-bootstrap/ProgressBar'; // Import ProgressBar
 
 const Accounts = () => {
+  const passwordFormRef = useRef(null);
   const { t } = useTranslation();
   const [accounts, setAccounts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -205,16 +211,12 @@ const Accounts = () => {
       render: (account) => account.storage ? (
         <div>
           <div>{account.storage.used} / {account.storage.total}</div>
-          <div className="progress mt-1" style={{ height: '5px' }}>
-            <div 
-              className="progress-bar" 
-              role="progressbar" 
-              style={{ width: account.storage.percent }} 
-              aria-valuenow={parseInt(account.storage.percent)} 
-              aria-valuemin="0" 
-              aria-valuemax="100">
-            </div>
-          </div>
+          {/* Use ProgressBar component */}
+          <ProgressBar 
+            now={parseInt(account.storage.percent)} 
+            style={{ height: '5px' }} 
+            className="mt-1" 
+          />
         </div>
       ) : 'N/A'
     },
@@ -248,9 +250,9 @@ const Accounts = () => {
       <AlertMessage type="danger" message={error} />
       <AlertMessage type="success" message={successMessage} />
       
-      <div className="row">
-        <div className="col-md-6">
-          <Card title="accounts.newAccount" className="mb-4">
+      <Row> {/* Use Row component */}
+        <Col md={6} className="mb-4"> {/* Use Col component */}
+          <Card title="accounts.newAccount"> {/* Removed mb-4 from Card, added to Col */}
             <form onSubmit={handleSubmit} className="form-wrapper">
               <FormField
                 type="email"
@@ -293,9 +295,9 @@ const Accounts = () => {
               />
             </form>
           </Card>
-        </div>
+        </Col> {/* Close first Col */}
         
-        <div className="col-md-6">
+        <Col md={6}> {/* Use Col component */}
           <Card title="accounts.existingAccounts">
             <DataTable
               columns={columns}
@@ -305,29 +307,21 @@ const Accounts = () => {
               emptyMessage="accounts.noAccounts"
             />
           </Card>
-        </div>
-      </div>
+        </Col> {/* Close second Col */}
+      </Row> {/* Close Row */}
       
-      {/* Password Change Modal */}
-      {showPasswordModal && selectedAccount && (
-        <div className="modal show d-block" tabIndex="-1">
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">
-                  {t('accounts.changePassword')} - {selectedAccount.email}
-                </h5>
-                <button 
-                  type="button" 
-                  className="btn-close" 
-                  onClick={handleClosePasswordModal} 
-                  aria-label="Close"
-                ></button>
-              </div>
-              <div className="modal-body">
-                <form onSubmit={handleSubmitPasswordChange}>
-                  <FormField
-                    type="password"
+      {/* Password Change Modal using react-bootstrap */}
+      <Modal show={showPasswordModal} onHide={handleClosePasswordModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>
+            {t('accounts.changePassword')} - {selectedAccount?.email} {/* Use optional chaining */}
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {selectedAccount && ( // Ensure selectedAccount exists before rendering form
+            <form onSubmit={handleSubmitPasswordChange} ref={passwordFormRef}>
+              <FormField
+                type="password"
                     id="newPassword"
                     name="newPassword"
                     label="accounts.newPassword"
@@ -345,31 +339,17 @@ const Accounts = () => {
                     value={passwordFormData.confirmPassword}
                     onChange={handlePasswordInputChange}
                     error={passwordFormErrors.confirmPassword}
-                    required
-                  />
-                </form>
-                  
-                  <div className="modal-footer">
-                    <button 
-                      type="button" 
-                      className="btn btn-secondary" 
-                      onClick={handleClosePasswordModal}
-                    >
-                      {t('common.cancel')}
-                    </button>
-                    <button 
-                      type="submit" 
-                      className="btn btn-primary"
-                    >
-                      {t('accounts.updatePassword')}
-                    </button>
-                  </div>
-              </div>
-            </div>
-          </div>
-          <div className="modal-backdrop show"></div>
-        </div>
-      )}
+                required
+              />
+            </form>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          {/* Use refactored Button component */}
+          <Button variant="secondary" onClick={handleClosePasswordModal} text="common.cancel" />
+          <Button variant="primary" onClick={handleSubmitPasswordChange} text="accounts.updatePassword" />
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };

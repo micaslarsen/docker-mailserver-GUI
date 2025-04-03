@@ -1,10 +1,11 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import Form from 'react-bootstrap/Form'; // Import react-bootstrap Form components
 
 /**
- * Reusable select field component with error handling
+ * Reusable select field component using react-bootstrap
  * @param {Object} props Component props
- * @param {string} props.id Input ID
+ * @param {string} props.id Input ID (used for controlId)
  * @param {string} props.name Input name
  * @param {string} props.label Label text (translation key)
  * @param {string} props.value Selected value
@@ -25,41 +26,47 @@ const SelectField = ({
   placeholder,
   error,
   helpText,
-  required = false
+  required = false,
+  ...rest // Pass any other props down to Form.Select
 }) => {
   const { t } = useTranslation();
-  
+
   return (
-    <div className="mb-3">
-      <label htmlFor={id} className="form-label">
+    <Form.Group className="mb-3" controlId={id}>
+      <Form.Label>
         {t(label)}
         {required && <span className="text-danger ms-1">*</span>}
-      </label>
-      <select
-        className={`form-select ${error ? 'is-invalid' : ''}`}
-        id={id}
+      </Form.Label>
+      <Form.Select
         name={name}
         value={value}
         onChange={onChange}
+        isInvalid={!!error}
+        required={required}
+        {...rest}
       >
         {placeholder && (
-          <option value="">{t(placeholder)}</option>
+          <option value="" disabled={required}> {/* Disable placeholder if required */}
+            {t(placeholder)}
+          </option>
         )}
         {options.map(option => (
           <option key={option.value} value={option.value}>
             {option.label}
           </option>
         ))}
-      </select>
+      </Form.Select>
       {error && (
-        <div className="invalid-feedback">{t(error)}</div>
+        <Form.Control.Feedback type="invalid">
+          {t(error)}
+        </Form.Control.Feedback>
       )}
       {helpText && (
-        <small className="form-text text-muted">
+        <Form.Text muted>
           {t(helpText)}
-        </small>
+        </Form.Text>
       )}
-    </div>
+    </Form.Group>
   );
 };
 

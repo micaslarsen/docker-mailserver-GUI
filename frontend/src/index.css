@@ -14,20 +14,23 @@ body {
   padding-top: 20px;
 }
 
-.sidebar-link {
-  color: #ced4da;
+/* Removed color and background styles as they are set inline in Sidebar.js */
+/* Kept basic layout and transition styles */
+.sidebar .nav-link { /* Target .nav-link added by react-bootstrap */
   text-decoration: none;
   display: block;
   padding: 10px 15px;
   transition: all 0.3s;
 }
 
-.sidebar-link:hover, .sidebar-link.active {
-  color: #fff;
+/* Kept only the :hover style */
+.sidebar .nav-link:hover {
+  color: #fff !important; /* Use !important to override potential inline styles */
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-.sidebar-link i {
+/* Icon style - target icon inside the link */
+.sidebar .nav-link i {
   margin-right: 10px;
 }
 

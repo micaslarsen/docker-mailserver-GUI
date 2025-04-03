@@ -6,26 +6,31 @@ import Dashboard from './pages/Dashboard';
 import Accounts from './pages/Accounts';
 import Aliases from './pages/Aliases';
 import Settings from './pages/Settings';
+import Container from 'react-bootstrap/Container'; // Import Container
+import Row from 'react-bootstrap/Row';         // Import Row
+import Col from 'react-bootstrap/Col';           // Import Col
 
 function App() {
   return (
     <div>
       <Navbar />
-      <div className="container-fluid">
-        <div className="row">
-          <div className="col-md-2 p-0">
+      <Container fluid>
+        <Row>
+          {/* Sidebar column */}
+          <Col md={2} className="p-0 sidebar-col"> {/* Added sidebar-col for potential custom styling */}
             <Sidebar />
-          </div>
-          <div className="col-md-10 main-content">
+          </Col>
+          {/* Main content column */}
+          <Col md={10} className="main-content"> 
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/accounts" element={<Accounts />} />
               <Route path="/aliases" element={<Aliases />} />
               <Route path="/settings" element={<Settings />} />
             </Routes>
-          </div>
-        </div>
-      </div>
+          </Col> {/* Close Main content column */}
+        </Row> {/* Close Row */}
+      </Container> {/* Close Container */}
     </div>
   );
 }

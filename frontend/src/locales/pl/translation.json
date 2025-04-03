@@ -84,11 +84,18 @@
     "containerName": "Nazwa kontenera Docker Mailserver",
     "containerNameInfo": "Nazwa kontenera Docker, w którym uruchomiony jest Docker Mailserver.",
     "saveSettings": "Zapisz Ustawienia",
+    "saveButton": "Zapisz Ustawienia",
     "settingsSaved": "Ustawienia zostały zapisane pomyślnie!",
+    "saveSuccess": "Ustawienia zostały zapisane pomyślnie!",
+    "saveError": "Nie można zapisać ustawień. Spróbuj ponownie.",
     "cannotSaveSettings": "Nie można zapisać ustawień. Spróbuj ponownie.",
-    "about": "O Docker Mailserver GUI",
-    "aboutText": "Docker Mailserver GUI to interfejs graficzny do zarządzania serwerem pocztowym Docker Mailserver. Aplikacja umożliwia łatwe zarządzanie kontami email, aliasami oraz monitorowanie statusu serwera.",
-    "version": "Wersja"
+    "configTitle": "Konfiguracja Docker Mailserver",
+    "setupPathHelp": "Pełna ścieżka do skryptu setup.sh w instalacji docker-mailserver.",
+    "containerNameHelp": "Nazwa kontenera Docker, w którym uruchomiony jest Docker Mailserver.",
+    "aboutTitle": "O Docker Mailserver GUI",
+    "aboutDescription": "Docker Mailserver GUI to interfejs graficzny do zarządzania serwerem pocztowym Docker Mailserver. Aplikacja umożliwia łatwe zarządzanie kontami email, aliasami oraz monitorowanie statusu serwera.",
+    "version": "Wersja",
+    "githubLink": "Zobacz na GitHub"
   },
   "common": {
     "loading": "Ładowanie...",

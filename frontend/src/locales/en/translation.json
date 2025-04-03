@@ -88,7 +88,16 @@
     "cannotSaveSettings": "Unable to save settings. Please try again.",
     "about": "About Docker Mailserver GUI",
     "aboutText": "Docker Mailserver GUI is a graphical interface for managing your Docker Mailserver. The application allows easy management of email accounts, aliases, and monitoring server status.",
-    "version": "Version"
+    "version": "Version",
+    "saveButton": "Save Settings",
+    "saveSuccess": "Settings saved successfully!",
+    "saveError": "Unable to save settings. Please try again.",
+    "configTitle": "Docker Mailserver Configuration",
+    "setupPathHelp": "Full path to the setup.sh script in your docker-mailserver installation.",
+    "containerNameHelp": "Name of the Docker container running Docker Mailserver.",
+    "aboutTitle": "About Docker Mailserver GUI",
+    "aboutDescription": "Docker Mailserver GUI is a graphical interface for managing your Docker Mailserver. The application allows easy management of email accounts, aliases, and monitoring server status.",
+    "githubLink": "View on GitHub"
   },
   "common": {
     "loading": "Loading...",

@@ -4,8 +4,10 @@ import { getServerStatus, getAccounts, getAliases } from '../services/api';
 import { 
   AlertMessage, 
   DashboardCard, 
-  LoadingSpinner 
+  LoadingSpinner
 } from '../components';
+import Row from 'react-bootstrap/Row'; // Import Row
+import Col from 'react-bootstrap/Col'; // Import Col
 
 const Dashboard = () => {
   const { t } = useTranslation();
@@ -72,8 +74,8 @@ const Dashboard = () => {
       
       <AlertMessage type="danger" message={error} />
       
-      <div className="row">
-        <div className="col-md-3">
+      <Row> {/* Use Row component */}
+        <Col md={3} className="mb-3"> {/* Use Col component and add bottom margin */}
           <DashboardCard
             title="dashboard.serverStatus"
             icon="hdd-rack-fill"
@@ -81,55 +83,55 @@ const Dashboard = () => {
             badgeColor={getStatusColor()}
             badgeText={getStatusText()}
           />
-        </div>
+        </Col>
         
-        <div className="col-md-3">
+        <Col md={3} className="mb-3">
           <DashboardCard
             title="dashboard.cpuUsage"
             icon="cpu"
             iconColor="primary"
             value={status.resources.cpu}
           />
-        </div>
+        </Col>
         
-        <div className="col-md-3">
+        <Col md={3} className="mb-3">
           <DashboardCard
             title="dashboard.memoryUsage"
             icon="memory"
             iconColor="info"
             value={status.resources.memory}
           />
-        </div>
+        </Col>
         
-        <div className="col-md-3">
+        <Col md={3} className="mb-3">
           <DashboardCard
             title="dashboard.diskUsage"
             icon="hdd"
             iconColor="warning"
             value={status.resources.disk}
           />
-        </div>
-      </div>
+        </Col>
+      </Row> {/* Close first Row */}
       
-      <div className="row mt-4">
-        <div className="col-md-6">
+      <Row className="mt-4"> {/* Use Row component */}
+        <Col md={6} className="mb-3">
           <DashboardCard
             title="dashboard.emailAccounts"
             icon="person-circle"
             iconColor="success"
             value={accountsCount}
           />
-        </div>
+        </Col>
         
-        <div className="col-md-6">
+        <Col md={6} className="mb-3">
           <DashboardCard
             title="dashboard.aliases"
             icon="arrow-left-right"
             iconColor="secondary"
             value={aliasesCount}
           />
-        </div>
-      </div>
+        </Col>
+      </Row> {/* Close second Row */}
     </div>
   );
 };

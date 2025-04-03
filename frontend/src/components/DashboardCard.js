@@ -1,8 +1,10 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import RBCard from 'react-bootstrap/Card'; // Import react-bootstrap Card
+import RBBadge from 'react-bootstrap/Badge'; // Import react-bootstrap Badge
 
 /**
- * Dashboard card component with icon and value display
+ * Dashboard card component using react-bootstrap
  * @param {Object} props Component props
  * @param {string} props.title Card title (translation key)
  * @param {string} props.icon Bootstrap icon class name (without 'bi-' prefix)
@@ -10,6 +12,7 @@ import { useTranslation } from 'react-i18next';
  * @param {string} props.iconColor Bootstrap text color class
  * @param {string} props.badgeColor Bootstrap badge color (if value should be displayed as badge)
  * @param {string} props.badgeText Text for badge (translation key)
+ * @param {string} props.className Additional CSS classes
  */
 const DashboardCard = ({
   title,
@@ -17,24 +20,28 @@ const DashboardCard = ({
   value,
   iconColor = 'primary',
   badgeColor,
-  badgeText
+  badgeText,
+  className = '',
+  ...rest
 }) => {
   const { t } = useTranslation();
   
   return (
-    <div className="card dashboard-card">
-      <div className={`dashboard-icon text-${iconColor}`}>
-        <i className={`bi bi-${icon}`}></i>
-      </div>
-      <h5>{t(title)}</h5>
-      {badgeColor ? (
-        <p className={`badge bg-${badgeColor}`}>
-          {badgeText ? t(badgeText) : value}
-        </p>
-      ) : (
-        <p>{value}</p>
-      )}
-    </div>
+    <RBCard className={`dashboard-card ${className}`} {...rest}>
+      <RBCard.Body>
+        <div className={`dashboard-icon text-${iconColor}`}>
+          <i className={`bi bi-${icon}`}></i>
+        </div>
+        <RBCard.Title as="h5">{t(title)}</RBCard.Title>
+        {badgeColor ? (
+          <RBBadge bg={badgeColor}>
+            {badgeText ? t(badgeText) : value}
+          </RBBadge>
+        ) : (
+          <p className="card-text">{value}</p> 
+        )}
+      </RBCard.Body>
+    </RBCard>
   );
 };
 

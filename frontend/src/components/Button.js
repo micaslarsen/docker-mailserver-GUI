@@ -1,8 +1,9 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import RBButton from 'react-bootstrap/Button'; // Import react-bootstrap Button
 
 /**
- * Reusable button component
+ * Reusable button component using react-bootstrap
  * @param {Object} props Component props
  * @param {string} props.type Button type: 'button', 'submit', 'reset'
  * @param {string} props.variant Button variant: 'primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark', 'link', 'outline-primary', etc.
@@ -23,24 +24,25 @@ const Button = ({
   size,
   disabled = false,
   className = '',
-  children
+  children,
+  ...rest // Pass any other props down
 }) => {
   const { t } = useTranslation();
-  
-  const sizeClass = size ? `btn-${size}` : '';
-  const btnClass = `btn btn-${variant} ${sizeClass} ${className}`;
-  
+
   return (
-    <button
+    <RBButton
       type={type}
-      className={btnClass}
+      variant={variant}
       onClick={onClick}
+      size={size}
       disabled={disabled}
+      className={className}
+      {...rest} // Spread remaining props
     >
-      {icon && <i className={`bi bi-${icon} ${text ? 'me-2' : ''}`}></i>}
+      {icon && <i className={`bi bi-${icon} ${text || children ? 'me-2' : ''}`}></i>}
       {text && t(text)}
       {children}
-    </button>
+    </RBButton>
   );
 };
 
