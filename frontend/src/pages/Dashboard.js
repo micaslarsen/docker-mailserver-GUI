@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getServerStatus, getAccounts, getAliases } from '../services/api';
-import { 
-  AlertMessage, 
-  DashboardCard, 
-  LoadingSpinner
-} from '../components';
+import { AlertMessage, DashboardCard, LoadingSpinner } from '../components';
 import Row from 'react-bootstrap/Row'; // Import Row
 import Col from 'react-bootstrap/Col'; // Import Col
 
@@ -13,7 +9,7 @@ const Dashboard = () => {
   const { t } = useTranslation();
   const [status, setStatus] = useState({
     status: 'loading',
-    resources: { cpu: '0%', memory: '0MB', disk: '0%' }
+    resources: { cpu: '0%', memory: '0MB', disk: '0%' },
   });
   const [accountsCount, setAccountsCount] = useState(0);
   const [aliasesCount, setAliasesCount] = useState(0);
@@ -24,14 +20,11 @@ const Dashboard = () => {
     const fetchDashboardData = async () => {
       try {
         setLoading(true);
-        
+
         // Fetch data in parallel
-        const [statusResponse, accountsResponse, aliasesResponse] = await Promise.all([
-          getServerStatus(),
-          getAccounts(),
-          getAliases()
-        ]);
-        
+        const [statusResponse, accountsResponse, aliasesResponse] =
+          await Promise.all([getServerStatus(), getAccounts(), getAliases()]);
+
         setStatus(statusResponse);
         setAccountsCount(accountsResponse.length);
         setAliasesCount(aliasesResponse.length);
@@ -45,10 +38,10 @@ const Dashboard = () => {
     };
 
     fetchDashboardData();
-    
+
     // Refresh data every 30 seconds
     const interval = setInterval(fetchDashboardData, 30000);
-    
+
     return () => clearInterval(interval);
   }, []);
 
@@ -71,11 +64,13 @@ const Dashboard = () => {
   return (
     <div>
       <h2 className="mb-4">{t('dashboard.title')}</h2>
-      
       <AlertMessage type="danger" message={error} />
-      
-      <Row> {/* Use Row component */}
-        <Col md={3} className="mb-3"> {/* Use Col component and add bottom margin */}
+      <Row>
+        {' '}
+        {/* Use Row component */}
+        <Col md={3} className="mb-3">
+          {' '}
+          {/* Use Col component and add bottom margin */}
           <DashboardCard
             title="dashboard.serverStatus"
             icon="hdd-rack-fill"
@@ -84,7 +79,6 @@ const Dashboard = () => {
             badgeText={getStatusText()}
           />
         </Col>
-        
         <Col md={3} className="mb-3">
           <DashboardCard
             title="dashboard.cpuUsage"
@@ -93,7 +87,6 @@ const Dashboard = () => {
             value={status.resources.cpu}
           />
         </Col>
-        
         <Col md={3} className="mb-3">
           <DashboardCard
             title="dashboard.memoryUsage"
@@ -102,7 +95,6 @@ const Dashboard = () => {
             value={status.resources.memory}
           />
         </Col>
-        
         <Col md={3} className="mb-3">
           <DashboardCard
             title="dashboard.diskUsage"
@@ -111,9 +103,11 @@ const Dashboard = () => {
             value={status.resources.disk}
           />
         </Col>
-      </Row> {/* Close first Row */}
-      
-      <Row className="mt-4"> {/* Use Row component */}
+      </Row>{' '}
+      {/* Close first Row */}
+      <Row className="mt-4">
+        {' '}
+        {/* Use Row component */}
         <Col md={6} className="mb-3">
           <DashboardCard
             title="dashboard.emailAccounts"
@@ -122,7 +116,6 @@ const Dashboard = () => {
             value={accountsCount}
           />
         </Col>
-        
         <Col md={6} className="mb-3">
           <DashboardCard
             title="dashboard.aliases"
@@ -131,7 +124,8 @@ const Dashboard = () => {
             value={aliasesCount}
           />
         </Col>
-      </Row> {/* Close second Row */}
+      </Row>{' '}
+      {/* Close second Row */}
     </div>
   );
 };

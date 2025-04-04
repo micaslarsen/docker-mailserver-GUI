@@ -43,33 +43,32 @@ const DataTable = ({
   }
 
   return (
-    <RBTable 
-      striped={striped} 
-      bordered={bordered} 
-      hover={hover} 
+    <RBTable
+      striped={striped}
+      bordered={bordered}
+      hover={hover}
       responsive={responsive}
       {...rest}
     >
       <thead>
         <tr>
-          {columns.map(column => (
+          {columns.map((column) => (
             <th key={column.key}>{t(column.label)}</th>
           ))}
         </tr>
       </thead>
       <tbody>
-        {renderRow 
-          ? data.map((item, index) => renderRow(item, index)) 
-          : data.map(item => (
+        {renderRow
+          ? data.map((item, index) => renderRow(item, index))
+          : data.map((item) => (
               <tr key={keyExtractor(item)}>
-                {columns.map(column => (
+                {columns.map((column) => (
                   <td key={`${keyExtractor(item)}-${column.key}`}>
                     {column.render ? column.render(item) : item[column.key]}
                   </td>
                 ))}
               </tr>
-            ))
-        }
+            ))}
       </tbody>
     </RBTable>
   );

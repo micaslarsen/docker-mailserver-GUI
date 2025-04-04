@@ -25,7 +25,8 @@ const Sidebar = () => {
         <i className="bi bi-speedometer2 me-2"></i> {t('sidebar.dashboard')}
       </Nav.Link>
       <Nav.Link as={NavLink} to="/accounts" style={getNavLinkStyle}>
-        <i className="bi bi-person-circle me-2"></i> {t('sidebar.emailAccounts')}
+        <i className="bi bi-person-circle me-2"></i>{' '}
+        {t('sidebar.emailAccounts')}
       </Nav.Link>
       <Nav.Link as={NavLink} to="/aliases" style={getNavLinkStyle}>
         <i className="bi bi-arrow-left-right me-2"></i> {t('sidebar.aliases')}

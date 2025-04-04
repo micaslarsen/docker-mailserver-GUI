@@ -48,15 +48,9 @@ const FormField = ({
         {...rest} // Spread remaining props
       />
       {error && (
-        <Form.Control.Feedback type="invalid">
-          {t(error)}
-        </Form.Control.Feedback>
+        <Form.Control.Feedback type="invalid">{t(error)}</Form.Control.Feedback>
       )}
-      {helpText && (
-        <Form.Text muted>
-          {t(helpText)}
-        </Form.Text>
-      )}
+      {helpText && <Form.Text muted>{t(helpText)}</Form.Text>}
     </Form.Group>
   );
 };

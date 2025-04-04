@@ -185,14 +185,14 @@ app.put('/api/accounts/:email/password', async (req, res) => {
   try {
     const { email } = req.params;
     const { password } = req.body;
-    
+
     if (!email) {
       return res.status(400).json({ error: 'Email is required' });
     }
     if (!password) {
       return res.status(400).json({ error: 'Password is required' });
     }
-    
+
     await dockerMailserver.updateAccountPassword(email, password);
     res.json({ message: 'Password updated successfully', email });
   } catch (error) {
@@ -254,10 +254,14 @@ app.post('/api/aliases', async (req, res) => {
   try {
     const { source, destination } = req.body;
     if (!source || !destination) {
-      return res.status(400).json({ error: 'Source and destination are required' });
+      return res
+        .status(400)
+        .json({ error: 'Source and destination are required' });
     }
     await dockerMailserver.addAlias(source, destination);
-    res.status(201).json({ message: 'Alias created successfully', source, destination });
+    res
+      .status(201)
+      .json({ message: 'Alias created successfully', source, destination });
   } catch (error) {
     res.status(500).json({ error: 'Unable to create alias' });
   }
@@ -297,7 +301,7 @@ app.delete('/api/aliases/:source/:destination', async (req, res) => {
     if (!source) {
       return res.status(400).json({ error: 'Source is required' });
     }
-    
+
     if (!destination) {
       return res.status(400).json({ error: 'Destination is required' });
     }
@@ -310,7 +314,7 @@ app.delete('/api/aliases/:source/:destination', async (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-  
+
   // Log debug status
   if (process.env.DEBUG_DOCKER === 'true') {
     console.log('🐞 Docker debug mode is ENABLED');

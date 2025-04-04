@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { 
-  AlertMessage, 
-  Button,
-  Card, 
-  FormField 
-} from '../components';
+import { AlertMessage, Button, Card, FormField } from '../components';
 
 const Settings = () => {
   const { t } = useTranslation();
-  const [setupPath, setSetupPath] = useState('/path/to/docker-mailserver/setup.sh');
+  const [setupPath, setSetupPath] = useState(
+    '/path/to/docker-mailserver/setup.sh'
+  );
   const [containerName, setContainerName] = useState('mailserver');
   const [successMessage, setSuccessMessage] = useState('');
   const [error, setError] = useState(null);
@@ -27,7 +24,7 @@ const Settings = () => {
     e.preventDefault();
     setSuccessMessage('');
     setError(null);
-    
+
     // In a real application, we would save settings to the backend
     // For demonstration, we'll just show a success message
     try {
@@ -40,10 +37,10 @@ const Settings = () => {
   return (
     <div>
       <h2 className="mb-4">{t('settings.title')}</h2>
-      
+
       <AlertMessage type="danger" message={error} />
       <AlertMessage type="success" message={successMessage} />
-      
+
       <Card title="settings.configTitle" className="mb-4">
         <form onSubmit={handleSubmit} className="form-wrapper">
           <FormField
@@ -57,7 +54,7 @@ const Settings = () => {
             helpText="settings.setupPathHelp"
             required
           />
-          
+
           <FormField
             type="text"
             id="containerName"
@@ -69,23 +66,25 @@ const Settings = () => {
             helpText="settings.containerNameHelp"
             required
           />
-          
-          <Button
-            type="submit"
-            variant="primary"
-            text="settings.saveButton"
-          />
+
+          <Button type="submit" variant="primary" text="settings.saveButton" />
         </form>
       </Card>
-      
+
       <Card title="settings.aboutTitle">
-        <Card.Text> {/* Use Card.Text */}
+        <Card.Text>
+          {' '}
+          {/* Use Card.Text */}
           {t('settings.aboutDescription')}
         </Card.Text>
-        <Card.Text> {/* Use Card.Text */}
+        <Card.Text>
+          {' '}
+          {/* Use Card.Text */}
           <strong>{t('settings.version')}:</strong> 1.0.0
         </Card.Text>
-        <Card.Text> {/* Use Card.Text */}
+        <Card.Text>
+          {' '}
+          {/* Use Card.Text */}
           <a
             href="https://github.com/docker-mailserver/docker-mailserver"
             target="_blank"
@@ -97,7 +96,8 @@ const Settings = () => {
               text="settings.githubLink"
             />
           </a>
-        </Card.Text> {/* Correct closing tag */}
+        </Card.Text>{' '}
+        {/* Correct closing tag */}
       </Card>
     </div>
   );

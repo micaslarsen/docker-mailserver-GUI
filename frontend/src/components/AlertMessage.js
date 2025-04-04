@@ -10,15 +10,21 @@ import RBAlert from 'react-bootstrap/Alert'; // Import react-bootstrap Alert
  * @param {boolean} props.translate Whether to translate the message (defaults to true)
  * @param {function} props.onClose Optional close handler for dismissible alerts
  */
-const AlertMessage = ({ type = 'info', message, translate = true, onClose, ...rest }) => {
+const AlertMessage = ({
+  type = 'info',
+  message,
+  translate = true,
+  onClose,
+  ...rest
+}) => {
   const { t } = useTranslation();
 
   if (!message) return null;
 
   return (
-    <RBAlert 
-      variant={type} 
-      onClose={onClose} 
+    <RBAlert
+      variant={type}
+      onClose={onClose}
       dismissible={!!onClose} // Make dismissible if onClose is provided
       {...rest}
     >

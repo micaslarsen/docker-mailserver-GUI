@@ -46,26 +46,22 @@ const SelectField = ({
         {...rest}
       >
         {placeholder && (
-          <option value="" disabled={required}> {/* Disable placeholder if required */}
+          <option value="" disabled={required}>
+            {' '}
+            {/* Disable placeholder if required */}
             {t(placeholder)}
           </option>
         )}
-        {options.map(option => (
+        {options.map((option) => (
           <option key={option.value} value={option.value}>
             {option.label}
           </option>
         ))}
       </Form.Select>
       {error && (
-        <Form.Control.Feedback type="invalid">
-          {t(error)}
-        </Form.Control.Feedback>
+        <Form.Control.Feedback type="invalid">{t(error)}</Form.Control.Feedback>
       )}
-      {helpText && (
-        <Form.Text muted>
-          {t(helpText)}
-        </Form.Text>
-      )}
+      {helpText && <Form.Text muted>{t(helpText)}</Form.Text>}
     </Form.Group>
   );
 };

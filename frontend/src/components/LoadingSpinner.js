@@ -10,21 +10,21 @@ import RBSpinner from 'react-bootstrap/Spinner'; // Import react-bootstrap Spinn
  * @param {string} props.animation Animation type: 'border' (default) or 'grow'
  * @param {string} props.customText Custom text for screen readers (if not using translation)
  */
-const LoadingSpinner = ({ 
-  size, 
-  variant = 'primary', 
-  animation = 'border', 
-  customText, 
-  ...rest 
+const LoadingSpinner = ({
+  size,
+  variant = 'primary',
+  animation = 'border',
+  customText,
+  ...rest
 }) => {
   const { t } = useTranslation();
-  
+
   return (
     <div className="d-flex justify-content-center" {...rest}>
-      <RBSpinner 
-        animation={animation} 
-        variant={variant} 
-        size={size} 
+      <RBSpinner
+        animation={animation}
+        variant={variant}
+        size={size}
         role="status"
       >
         <span className="visually-hidden">

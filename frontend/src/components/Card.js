@@ -11,7 +11,14 @@ import RBCard from 'react-bootstrap/Card'; // Import react-bootstrap Card
  * @param {boolean} props.noPadding Remove padding from card body
  * @param {React.ReactNode} props.headerContent Custom content for the header
  */
-const Card = ({ title, children, className = '', noPadding = false, headerContent, ...rest }) => {
+const Card = ({
+  title,
+  children,
+  className = '',
+  noPadding = false,
+  headerContent,
+  ...rest
+}) => {
   const { t } = useTranslation();
   const bodyClassName = noPadding ? 'p-0' : '';
 
@@ -19,13 +26,15 @@ const Card = ({ title, children, className = '', noPadding = false, headerConten
     <RBCard className={className} {...rest}>
       {(title || headerContent) && (
         <RBCard.Header>
-          {title && <RBCard.Title as="h5" className="mb-0">{t(title)}</RBCard.Title>}
+          {title && (
+            <RBCard.Title as="h5" className="mb-0">
+              {t(title)}
+            </RBCard.Title>
+          )}
           {headerContent}
         </RBCard.Header>
       )}
-      <RBCard.Body className={bodyClassName}>
-        {children}
-      </RBCard.Body>
+      <RBCard.Body className={bodyClassName}>{children}</RBCard.Body>
     </RBCard>
   );
 };

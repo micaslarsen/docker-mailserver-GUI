@@ -25,7 +25,7 @@ const DashboardCard = ({
   ...rest
 }) => {
   const { t } = useTranslation();
-  
+
   return (
     <RBCard className={`dashboard-card ${className}`} {...rest}>
       <RBCard.Body>
@@ -34,11 +34,9 @@ const DashboardCard = ({
         </div>
         <RBCard.Title as="h5">{t(title)}</RBCard.Title>
         {badgeColor ? (
-          <RBBadge bg={badgeColor}>
-            {badgeText ? t(badgeText) : value}
-          </RBBadge>
+          <RBBadge bg={badgeColor}>{badgeText ? t(badgeText) : value}</RBBadge>
         ) : (
-          <p className="card-text">{value}</p> 
+          <p className="card-text">{value}</p>
         )}
       </RBCard.Body>
     </RBCard>

@@ -39,7 +39,9 @@ const Button = ({
       className={className}
       {...rest} // Spread remaining props
     >
-      {icon && <i className={`bi bi-${icon} ${text || children ? 'me-2' : ''}`}></i>}
+      {icon && (
+        <i className={`bi bi-${icon} ${text || children ? 'me-2' : ''}`}></i>
+      )}
       {text && t(text)}
       {children}
     </RBButton>

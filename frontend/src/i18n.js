@@ -8,11 +8,11 @@ import translationPL from './locales/pl/translation.json';
 
 const resources = {
   en: {
-    translation: translationEN
+    translation: translationEN,
   },
   pl: {
-    translation: translationPL
-  }
+    translation: translationPL,
+  },
 };
 
 i18n
@@ -26,15 +26,15 @@ i18n
     lng: 'pl', // Set Polish as default language
     fallbackLng: 'en',
     debug: false,
-    
+
     interpolation: {
       escapeValue: false, // not needed for react as it escapes by default
     },
-    
+
     detection: {
       order: ['localStorage', 'navigator'],
       caches: ['localStorage'],
-    }
+    },
   });
 
 export default i18n;
