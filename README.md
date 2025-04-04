@@ -126,6 +126,29 @@ For detailed Docker setup instructions, please refer to:
 - [README.docker.md](README.docker.md) - Detailed Docker setup guide
 - [README.dockerhub.md](README.dockerhub.md) - Docker Hub specific information
 
+## Code Formatting
+
+This project uses [Prettier](https://prettier.io/) for consistent code formatting. Configuration is defined in the root `.prettierrc.json` file.
+
+### Automatic Formatting
+
+Formatting is automatically applied to staged files before each commit using [Husky](https://typicode.github.io/husky/) and [lint-staged](https://github.com/okonet/lint-staged). This ensures that all committed code adheres to the defined style guide.
+
+### Manual Formatting
+
+You can also manually format the code using the npm scripts available in both the `backend` and `frontend` directories:
+
+```bash
+# Navigate to the respective directory (backend or frontend)
+cd backend # or cd frontend
+
+# Format all relevant files
+npm run format
+
+# Check if all relevant files are formatted correctly
+npm run format:check
+```
+
 ## License
 
 MIT
