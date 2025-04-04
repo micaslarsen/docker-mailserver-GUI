@@ -1,5 +1,7 @@
 ## BUGS:
+* [ ] - Translations do not update immediately after language change (requires manual refresh).
+* [ ] - Newly created account doesn't appear on the list immediately (requires manual refresh after a few seconds).
 ## TODO:
-* [ ] - add information for future contributors
-* [ ] - the page setting is only mock, remove it or make it work
-* [ ] - move the entire UI to use react-bootstrap instead of js bootstrap
+* [ ] - Add information for future contributors (e.g., contribution guidelines).
+* [ ] - Implement functionality for the Settings page or remove it (currently mocked).
+* [ ] - Restrict domain part when creating a new account to domains configured in the mail server (e.g., using a select/autocomplete).
