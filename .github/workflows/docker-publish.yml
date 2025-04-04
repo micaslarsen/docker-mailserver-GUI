@@ -4,8 +4,22 @@ on:
   push:
     branches: [ "master" ]
     tags: [ 'v*.*.*' ]
+    paths:
+      - 'backend/**'
+      - 'frontend/**'
+      - 'docker/**'
+      - 'Dockerfile'
+      - 'docker-compose.yml'
+      - '.github/workflows/**'
   pull_request:
     branches: [ "master" ]
+    paths:
+      - 'backend/**'
+      - 'frontend/**'
+      - 'docker/**'
+      - 'Dockerfile'
+      - 'docker-compose.yml'
+      - '.github/workflows/**'
 
 env:
   IMAGE_NAME: dunajdev/docker-mailserver-gui
