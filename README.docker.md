@@ -1,6 +1,6 @@
 # Docker Mailserver GUI - Detailed Docker Setup
 
-This document provides detailed instructions for deploying and managing the Docker Mailserver GUI using Docker.
+This document provides detailed instructions for deploying and managing the [Docker Mailserver](https://github.com/docker-mailserver/docker-mailserver) GUI using Docker.
 
 ## Prerequisites
 

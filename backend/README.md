@@ -1,6 +1,6 @@
 # Backend GUI for Docker Mailserver
 
-This is a backend API for the Docker Mailserver user interface, enabling management of email accounts, aliases, and other mail server functions.
+This is a backend API for the [Docker Mailserver](https://github.com/docker-mailserver/docker-mailserver) user interface, enabling management of email accounts, aliases, and other mail server functions.
 
 ## Installation
 
