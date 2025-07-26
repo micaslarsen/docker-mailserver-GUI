@@ -23,8 +23,7 @@ i18n
   // init i18next
   .init({
     resources,
-    lng: 'pl', // Set Polish as default language
-    fallbackLng: 'en',
+    fallbackLng: 'pl', // Set Polish as default language
     debug: false,
 
     interpolation: {
