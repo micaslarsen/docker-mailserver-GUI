@@ -13,12 +13,6 @@ services:
     # The hostname should be the mail subdomain (e.g., mail.yourdomain.com).
     hostname: mail.yourdomain.com
     environment:
-      # --- Basic Setup ---
-      # This creates your first email account and allows the server to start.
-      # IMPORTANT: Change the email and use a very strong password.
-      - ONE_EMAIL=user@yourdomain.com
-      - ONE_PASSWORD=a-very-strong-and-secure-password
-      
       # --- Hostname & Certificate Fix ---
       # OVERRIDE_HOSTNAME explicitly tells the startup script what domain to use
       # for certificate generation, fixing the self-signed cert error.
@@ -42,6 +36,7 @@ services:
     volumes:
       # --- Persistent Data Mapping ---
       # Maps mailserver data to your Unraid cache drive as requested.
+      # NOTE: Ensure the host paths have correct write permissions (e.g., chmod -R 777)
       - /mnt/cache/ONTO/MAIL/maildata/:/var/mail/
       - /mnt/cache/ONTO/MAIL/mailstate/:/var/mail-state/
       - /mnt/cache/ONTO/MAIL/logs/:/var/log/mail/
