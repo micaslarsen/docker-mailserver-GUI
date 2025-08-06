@@ -19,6 +19,13 @@ services:
       - ONE_EMAIL=user@yourdomain.com
       - ONE_PASSWORD=a-very-strong-and-secure-password
       
+      # --- Hostname & Certificate Fix ---
+      # OVERRIDE_HOSTNAME explicitly tells the startup script what domain to use
+      # for certificate generation, fixing the self-signed cert error.
+      - OVERRIDE_HOSTNAME=oonto.dk
+      # POSTMASTER_ADDRESS is required for a valid Dovecot configuration.
+      - POSTMASTER_ADDRESS=admin@oonto.dk
+
       # --- Security & SSL ---
       # For production, change SSL_TYPE to 'letsencrypt' and set DMS_LETSENCRYPT_EMAIL.
       - SSL_TYPE=self-signed
